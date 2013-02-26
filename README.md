@@ -44,6 +44,19 @@ The mechanism will allow communities to form around Raspbian as the base for spe
     ##
     ## Install a package that will automatically mount & unmount USB drives
     ## apt-get install usbmount
+    ##
+    ## Setup wifi so you can connect to a secured network without a keyboard & monitor!
+    ## cat << EOF | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf
+    ## network={
+    ##         ssid="MyWifiName"
+    ##         scan_ssid=1
+    ##         psk="MyWifiPassword"
+    ##         id_str="work"
+    ##         priority=5
+    ## }
+    ## EOF
+    ## ifdown wlan0
+    ## ifup wlan0
 
     # Leave this block alone (unless you took out REMOVE_SELF above, I guess)
     if [[ $REMOVE_SELF == 1 && $RC_LOCAL == called && $0 == /boot/boot_script.sh ]]; then
