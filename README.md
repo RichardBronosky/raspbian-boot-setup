@@ -37,6 +37,11 @@ The mechanism will allow communities to form around Raspbian as the base for spe
     
     ## Here are some examples of things you might do...
     ##
+    ## Remove unneeded packages
+    ## apt-get -y remove --purge xserver-common x11-common gnome-icon-theme gnome-themes-standard penguinspuzzle
+    ## apt-get -y remove --purge desktop-base desktop-file-utils hicolor-icon-theme raspberrypi-artwork omxplayer
+    ## apt-get -y autoremove
+    ##
     ## Install a package that will automatically mount & unmount USB drives
     ## apt-get install usbmount
 
