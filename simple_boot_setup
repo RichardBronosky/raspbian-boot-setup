@@ -1,0 +1,27 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          simple_boot_setup
+# Required-Start:    $local_fs
+# Required-Stop:
+# X-Start-Before:    $network
+# X-Stop-After:
+# Default-Start: 2
+# Default-Stop:
+# Short-Description: Run /boot/simple_boot_setup.sh at boot
+# Description:
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+set -e
+
+case "$1" in
+  start)
+    log_daemon_msg "Running simple_boot_setup"
+    [ -x /boot/simple_boot_setup.sh ] && ( CALLED_BY=init /boot/simple_boot_setup.sh )
+    ;;
+  *)
+    echo "Usage: $0 start" >&2
+    exit 3
+    ;;
+esac
