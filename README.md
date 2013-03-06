@@ -12,7 +12,7 @@ The mechanism will allow communities to form around Raspbian as the base for spe
 
 # Implementation
 
-1. /etc/rc2.d/S01simple_boot_setup is symlinked to /etc/init.d/simple_boot_setup
+1. /etc/rcS.d/S01simple_boot_setup is symlinked to /etc/init.d/simple_boot_setup
 2. /etc/init.d/simple_boot_setup calls /boot/simple_boot_setup.sh
 3. /boot is a FAT file system so that *any* OS can edit it.
 
@@ -27,14 +27,14 @@ The mechanism will allow communities to form around Raspbian as the base for spe
     apt-get install usbmount
     
     ## Setup wifi so you can connect to a secured network without a keyboard & monitor!
-    cat << EOF | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf
-    network={
-           ssid="MyWiFi"
-           psk="MyPassword"
-           proto=RSN
-           key_mgmt=WPA-PSK
-           pairwise=CCMP TKIP
-           group=CCMP TKIP
-           auth_alg=OPEN
-    }
-    EOF
+    cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.bak
+    wpa_passphrase "MyWiFi" "MyPassphrase" | tee -a /etc/wpa_supplicant/wpa_supplicant.conf
+    sed -i.bak 's/iface wlan0 inet manual/iface wlan0 inet dhcp/; s/wpa-roam/wpa-conf/; $i auto wlan0 eth0' /etc/network/interfaces
+
+    ## Add your SSH pub key
+    (umask 077; mkdir -p ~/.ssh; touch ~/.ssh/authorized_keys)
+    chown -R $(id -u pi):$(id -g pi) ~/.ssh
+    curl -sL https://raw.github.com/RichardBronosky/dotfiles/master/.ssh/authorized_keys >> ~/.ssh/authorized_keys
+
+    ## fake completing the raspi-config
+    sed '/do_finish()/,/^$/!d' /usr/bin/raspi-config | sed -e '1i ASK_TO_REBOOT=0;' -e '$a do_finish' | bash
