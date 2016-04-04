@@ -34,7 +34,7 @@ The mechanism will allow communities to form around Raspbian as the base for spe
     ## Add your SSH pub key
     (umask 077; mkdir -p ~/.ssh; touch ~/.ssh/authorized_keys)
     chown -R $(id -u pi):$(id -g pi) ~/.ssh
-    curl -sL https://raw.github.com/RichardBronosky/dotfiles/master/.ssh/authorized_keys >> ~/.ssh/authorized_keys
+    curl -sL https://github.com/RichardBronosky.keys >> ~/.ssh/authorized_keys
 
     ## fake completing the raspi-config
     sed '/do_finish()/,/^$/!d' /usr/bin/raspi-config | sed -e '1i ASK_TO_REBOOT=0;' -e '$a do_finish' | bash
